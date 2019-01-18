@@ -3,10 +3,10 @@ import './style.css'
 
 const Loading = props => {
   return (
-    <div class="loading-wrapper">
-      <div class="loading">
-        <div class="clock-hand minute-hand"></div>
-        <div class="clock-hand hour-hand"></div>
+    <div className="loading-wrapper">
+      <div className="loading">
+        <div className="clock-hand minute-hand"></div>
+        <div className="clock-hand hour-hand"></div>
       </div>
     </div>
   )

@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import Loading from './components/Loading'
-import axios from 'axios'
+import APOD from './APOD'
 import Hubble from './Hubble'
-
-const apiKey = 'SwFhSlwH5CmhsnTiG6rxdyqqx4tFteORyM47bzTl'
 
 class App extends Component {
   constructor() {
@@ -23,22 +21,9 @@ class App extends Component {
     return str.length < 2 ? '0' + str : str
   }
 
-  formatDate = date => {
-    const year = date.getFullYear()
-    const day = this.zeroPad(date.getDate())
-    const month = this.zeroPad(date.getMonth() + 1)
-    return `${year}-${month}-${day}`
-  }
-
   getData = async () => {
     await this.setState({loading: true})
-    const oneDay = 1000*60*60*24
-    const today = new Date()
-    const date = new Date(today - (this.state.daysBack * oneDay))
-    const dateParam = this.formatDate(date)
-    const url = `https://api.nasa.gov/planetary/apod?date=${dateParam}&api_key=${apiKey}`
-    const resp = await axios(url)
-    const imgInfo = resp.data
+    const imgInfo = await APOD.getData(this.state.daysBack)
     const loading = false
     this.setState({imgInfo, loading})
   }
