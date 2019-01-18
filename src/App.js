@@ -1,25 +1,88 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import axios from 'axios'
+
+const apiKey = 'SwFhSlwH5CmhsnTiG6rxdyqqx4tFteORyM47bzTl'
 
 class App extends Component {
+  constructor() {
+    super()
+    this.state = {
+      daysBack: 0,
+      imgInfo: null,
+    }
+  }
+
+  zeroPad = (num) => {
+    const str = num.toString()
+    return str.length < 2 ? '0' + str : str
+  }
+
+  formatDate = date => {
+    const year = date.getFullYear()
+    const day = this.zeroPad(date.getDate())
+    const month = this.zeroPad(date.getMonth() + 1)
+    return `${year}-${month}-${day}`
+  }
+
+  getData = async () => {
+    const oneDay = 1000*60*60*24
+    const today = new Date()
+    const date = new Date(today - (this.state.daysBack * oneDay))
+    console.log(date)
+    const dateParam = this.formatDate(date)
+    const url = `https://api.nasa.gov/planetary/apod?date=${dateParam}&api_key=${apiKey}`
+    const resp = await axios(url)
+    const imgInfo = resp.data
+    this.setState({imgInfo})
+  }
+
+  changeDay = async posOrNeg => {
+    if (this.state.daysBack + posOrNeg >= 0) {
+      await this.setState(prev => {
+        const daysBack = prev.daysBack + posOrNeg
+        console.log(daysBack)
+        return {daysBack}
+      })
+      this.getData()
+    }
+  }
+
+  addEventListeners = () => {
+    window.addEventListener('keyup', e => {
+      const key = e.key
+      if (key === 'ArrowLeft') {
+        this.changeDay(1)
+      } else if (key === 'ArrowRight') {
+        this.changeDay(-1)
+      }
+    })
+  }
+
+  setToday = async () => {
+    await this.setState({daysBack: 0})
+    this.getData()
+  }
+
+  componentDidMount() {
+    this.getData()
+    this.addEventListeners()
+  }
   render() {
+    const imgUrl = this.state.imgInfo ? this.state.imgInfo.url : ''
+    const title = this.state.imgInfo ? `${this.state.imgInfo.title}` : ''
+    const date = this.state.imgInfo ? `${this.state.imgInfo.date}` : ''
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <div className="info">
+          <h1>Shane's Picture Of The Day</h1>
+          <h2>{title}</h2>
+          <h3>{date}</h3>
+          <button onClick={() => this.changeDay(1)}>Previous</button>
+          <button onClick={() => this.changeDay(-1)}>Next</button>
+          <button className="today-button" onClick={this.setToday}>Today</button>
+        </div>
+        <div className="img-wrapper"><img src={imgUrl} alt="APOD" /></div>
       </div>
     );
   }
