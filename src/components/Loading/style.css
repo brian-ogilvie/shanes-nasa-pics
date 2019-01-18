@@ -1,0 +1,51 @@
+.loading-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fade-in .5s linear;
+}
+
+.loading {
+  box-sizing: content-box;
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid white;
+  box-shadow: 0 0 3px black;
+}
+
+.clock-hand {
+  position: absolute;
+  left: 48px;
+  width: 4px;
+  background-color: white;
+  transform-origin: 50% 98%;
+  border-radius: 2px;
+}
+
+.minute-hand {
+  top: 2px;
+  height: 48px;
+  animation: clock-hands .8s linear infinite;
+}
+
+.hour-hand {
+  height: 25px;
+  top: 25px;
+  animation: clock-hands 9.6s linear infinite;
+}
+
+@keyframes clock-hands {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

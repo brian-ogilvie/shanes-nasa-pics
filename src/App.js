@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
+import Loading from './components/Loading'
 import axios from 'axios'
+import Hubble from './Hubble'
 
 const apiKey = 'SwFhSlwH5CmhsnTiG6rxdyqqx4tFteORyM47bzTl'
 
@@ -10,6 +12,9 @@ class App extends Component {
     this.state = {
       daysBack: 0,
       imgInfo: null,
+      news: [],
+      hubbleRelease: null,
+      loading: false,
     }
   }
 
@@ -26,22 +31,22 @@ class App extends Component {
   }
 
   getData = async () => {
+    await this.setState({loading: true})
     const oneDay = 1000*60*60*24
     const today = new Date()
     const date = new Date(today - (this.state.daysBack * oneDay))
-    console.log(date)
     const dateParam = this.formatDate(date)
     const url = `https://api.nasa.gov/planetary/apod?date=${dateParam}&api_key=${apiKey}`
     const resp = await axios(url)
     const imgInfo = resp.data
-    this.setState({imgInfo})
+    const loading = false
+    this.setState({imgInfo, loading})
   }
 
   changeDay = async posOrNeg => {
     if (this.state.daysBack + posOrNeg >= 0) {
       await this.setState(prev => {
         const daysBack = prev.daysBack + posOrNeg
-        console.log(daysBack)
         return {daysBack}
       })
       this.getData()
@@ -59,6 +64,17 @@ class App extends Component {
     })
   }
 
+  getNews = async () => {
+    const news = await Hubble.getNews()
+    await this.setState({news})
+    this.getImagesForRelease(this.state.news[0].news_id)
+  }
+
+  getImagesForRelease = async (newsId) => {
+    const hubbleRelease = await Hubble.getImagesForRelease(newsId)
+    this.setState({hubbleRelease})
+  }
+
   setToday = async () => {
     await this.setState({daysBack: 0})
     this.getData()
@@ -67,6 +83,7 @@ class App extends Component {
   componentDidMount() {
     this.getData()
     this.addEventListeners()
+    // this.getNews()
   }
   render() {
     const imgUrl = this.state.imgInfo ? this.state.imgInfo.url : ''
@@ -82,7 +99,10 @@ class App extends Component {
           <button onClick={() => this.changeDay(-1)}>Next</button>
           <button className="today-button" onClick={this.setToday}>Today</button>
         </div>
-        <div className="img-wrapper"><img src={imgUrl} alt="APOD" /></div>
+        <div className="img-wrapper">
+          {imgUrl && <img src={imgUrl} alt="APOD" />}
+        </div>
+        {this.state.loading && <Loading />}
       </div>
     );
   }

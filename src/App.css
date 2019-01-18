@@ -33,6 +33,7 @@ body {
 }
 
 .img-wrapper {
+  position: relative;
   width: 70%;
   overflow: scroll;
   display: flex;
@@ -45,6 +46,7 @@ h1,h2,h3,h4,h5 {
 
 h1 {
   position: fixed;
+  z-index: 2;
   top: 15px;
   left: 20px;
   font-size: 4rem;
@@ -80,6 +82,15 @@ button:hover {
 .today-button:hover {
   border-color: yellow;
   color: yellow;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 
