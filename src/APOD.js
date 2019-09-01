@@ -1,8 +1,7 @@
 import axios from 'axios'
-import apiKeys from './util/config'
 import Helper from './util/Helper'
 
-const API_KEY = apiKeys.nasa
+const API_KEY = process.env.REACT_APP_API_KEY;
 
 const APOD = {
   async getData(daysBack) {

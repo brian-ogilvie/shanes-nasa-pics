@@ -3,6 +3,7 @@ import './App.css';
 import Loading from './components/Loading'
 import ApodControls from './components/ApodControls'
 import Hubble from './Hubble'
+require('dotenv').config();
 
 class App extends Component {
   constructor() {
