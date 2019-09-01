@@ -4,7 +4,7 @@ While building the [Sentry](https://github.com/broadwaycodez/sentry) app, my son
 
 ## Deployed Project
 
-[http://shanes-nasa-pics.surge.sh/](http://shanes-nasa-pics.surge.sh/)
+[http://shanes-nasa-pics.netlify.com/](http://shanes-nasa-pics.netlify.com/)
 
 ## Technologies Used
 
