@@ -1,6 +1,6 @@
 # Shane's NASA Pics
 
-While building the [Sentry]() app, my son asked me why I was building a NASA app that didn't involve pictures. So I built him this app to display NASA's Astronomy Picture Of The Day (APOD). 
+While building the [Sentry](https://github.com/broadwaycodez/sentry) app, my son asked me why I was building a NASA app that didn't involve pictures. So I built him this app to display NASA's Astronomy Picture Of The Day (APOD). 
 
 ## Deployed Project
 
