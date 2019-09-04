@@ -3,6 +3,8 @@ import './App.css';
 import Loading from './components/Loading'
 import ApodControls from './components/ApodControls'
 import Hubble from './Hubble'
+import Iframe from './components/Iframe';
+
 require('dotenv').config();
 
 class App extends Component {
@@ -12,6 +14,7 @@ class App extends Component {
       news: [],
       hubbleRelease: null,
       loading: false,
+      mediaType: null,
       imgUrl: '',
     }
   }
@@ -31,19 +34,25 @@ class App extends Component {
     this.setState({loading})
   }
 
-  setImage = imgUrl => {
-    this.setState({imgUrl})
-  }
+  setImage = (mediaType, imgUrl) => {
+    this.setState({mediaType, imgUrl});
+  };
 
+  renderMedia = () => {
+    const { mediaType, imgUrl } = this.state;
+    return mediaType === 'video'
+      ? <Iframe src={imgUrl} title="APOD" />
+      : <img src={imgUrl} alt="APOD" />;
+  };
 
   render() {
-    const imgUrl = this.state.imgUrl
+    const { imgUrl } = this.state;
     return (
       <div className="App">
         <h1>Shane's NASA Pictures</h1>
         <ApodControls loading={this.setLoading} setImage={this.setImage}/>
         <div className="img-wrapper">
-          {imgUrl && <img src={imgUrl} alt="APOD" />}
+          {imgUrl && this.renderMedia()}
         </div>
         {this.state.loading && <Loading />}
       </div>

@@ -35,9 +35,11 @@ body {
 .img-wrapper {
   position: relative;
   width: 70%;
+  min-height: 100vh;
   overflow: scroll;
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 }
 
 h1,h2,h3,h4,h5 {

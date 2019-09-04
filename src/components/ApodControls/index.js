@@ -38,7 +38,8 @@ class ApodControls extends React.Component {
   getData = async () => {
     await this.props.loading(true)
     const imgInfo = await APOD.getData(this.state.daysBack)
-    this.props.setImage(imgInfo.url)
+    const { media_type: type, url } = imgInfo;
+    this.props.setImage(type, url);
     await this.setState({imgInfo})
     this.props.loading(false)
   }
